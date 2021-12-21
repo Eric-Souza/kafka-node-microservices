@@ -1,14 +1,13 @@
-// Receive message through Kafka
 import { Kafka } from 'kafkajs';
 
 const kafka = new Kafka({
-  clientId: 'certificate',
   brokers: ['localhost:9092'],
+  clientId: 'certificate',
 });
 
 const topic = 'issue-certificate';
-const consumer = kafka.consumer({ groupId: 'certificate-group' });
 
+const consumer = kafka.consumer({ groupId: 'certificate-group' });
 const producer = kafka.producer();
 
 async function run() {
@@ -22,16 +21,14 @@ async function run() {
 
       const payload = JSON.parse(message.value);
 
-      // setTimeout(() => {
       producer.send({
         topic: 'certification-response',
         messages: [
           {
-            value: `Certificado do usuário ${payload.user.name} do curso ${payload.course} gerado!`,
+            value: `Certificate of user ${payload.user.name} of the ${payload.course} course created!`,
           },
         ],
       });
-      // }, 3000);
     },
   });
 }
